@@ -1,0 +1,43 @@
+name: iOS_build
+on: [workflow_dispatch]
+env:
+  ubuntu_image: "ubuntu:22.04"
+jobs:
+  build:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        build: [Release]
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v3
+
+      - name: Configure
+        run: |
+          wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-model-whisper-base.bin
+          mv ggml*.bin examples/whisper.swiftui/whisper.swiftui.demo/Resources/models
+          wget https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav
+          mv *.wav examples/whisper.swiftui/whisper.swiftui.demo/Resources/samples
+          cp models/for-tests-ggml-base.en.bin models/ggml-base.en.bin
+          mkdir models/ggml-base.en-encoder.mlmodelc
+
+      - name: Build objc example
+        run: xcodebuild -project examples/whisper.objc/whisper.objc.xcodeproj -scheme whisper.objc -configuration ${{ matrix.build }} -sdk iphonesimulator build
+
+      - name: Upload objc.ipa
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-build-apk
+          path: examples/whisper.android/**/*.ipa
+
+      - name: Build swiftui example
+        run: xcodebuild -project examples/whisper.swiftui/whisper.swiftui.xcodeproj -scheme WhisperCppDemo -configuration ${{ matrix.build }} -sdk iphonesimulator build
+
+
+      - name: Upload swiftui.ipa
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-build-ipa
+          path: examples/whisper.swiftui/**/*.ipa
