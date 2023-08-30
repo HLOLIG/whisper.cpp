@@ -1,0 +1,33 @@
+name: android_build
+on: [workflow_dispatch]
+env:
+  ubuntu_image: "ubuntu:22.04"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v3
+
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - id: get-project
+        name: Get project name
+        run: echo "::set-output name=PROJECT::$(cat project-to-build)"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Build
+        working-directory: ./examples/whisper.android
+        run: |
+          ./gradlew assembleDebug --stacktrace
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-build-apk
+          path: examples/whisper.android/**/*.apk
