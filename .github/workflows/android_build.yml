@@ -25,8 +25,10 @@ jobs:
       - name: Build
         working-directory: ./examples/whisper.android
         run: |
-          wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-model-whisper-tiny-q5_1.bin app/src/main/assets/models/ggml-model-whisper-tiny-q5_1.bin
-          wget https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav app/src/main/assets/samples/jfk.wav
+          wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-model-whisper-tiny-q5_1.bin
+          mv ggml*.bin app/src/main/assets/models/ggml*.bin
+          wget https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav
+          mv *.wav app/src/main/assets/samples/*.wav
           ./gradlew assembleDebug --stacktrace
       - name: Upload APK
         uses: actions/upload-artifact@v2
