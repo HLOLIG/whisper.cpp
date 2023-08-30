@@ -16,7 +16,7 @@ jobs:
 
       - name: Configure
         run: |
-          https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin
+          wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin
           mv ggml*.bin examples/whisper.swiftui/whisper.swiftui.demo/Resources/models
           wget https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav
           mv *.wav examples/whisper.swiftui/whisper.swiftui.demo/Resources/samples
