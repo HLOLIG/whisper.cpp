@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-build-apk
-          path: examples/whisper.android/**/*.ipa
+          path: /Users/runner/Library/Developer/Xcode/DerivedData/whisper*/Build/Products/Release-iphonesimulator/*.app
 
       - name: Build swiftui example
         run: xcodebuild -project examples/whisper.swiftui/whisper.swiftui.xcodeproj -scheme WhisperCppDemo -configuration ${{ matrix.build }} -sdk iphonesimulator build
@@ -40,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-build-ipa
-          path: examples/whisper.swiftui/**/*.ipa
+          path: /Users/runner/Library/Developer/Xcode/DerivedData/whisper*/Build/Products/Release-iphonesimulator/*.app
