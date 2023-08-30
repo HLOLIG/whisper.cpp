@@ -25,10 +25,12 @@ jobs:
       - name: Build
         working-directory: ./examples/whisper.android
         run: |
+          mkdir app/src/main/assets/models/
+          mkdir app/src/main/assets/samples/
           wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-model-whisper-tiny-q5_1.bin
-          mv ggml*.bin app/src/main/assets/models/ggml*.bin
+          mv ggml*.bin app/src/main/assets/models/
           wget https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav
-          mv *.wav app/src/main/assets/samples/*.wav
+          mv *.wav app/src/main/assets/samples/
           ./gradlew assembleDebug --stacktrace
       - name: Upload APK
         uses: actions/upload-artifact@v2
