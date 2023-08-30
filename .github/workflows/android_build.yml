@@ -25,8 +25,9 @@ jobs:
       - name: Build
         working-directory: ./examples/whisper.android
         run: |
-          mkdir app/src/main/assets/models/
-          mkdir app/src/main/assets/samples/
+          mkdir app/src/main/assets
+          mkdir app/src/main/assets/models
+          mkdir app/src/main/assets/samples
           wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-model-whisper-tiny-q5_1.bin
           mv ggml*.bin app/src/main/assets/models/
           wget https://github.com/ggerganov/whisper.cpp/raw/master/samples/jfk.wav
